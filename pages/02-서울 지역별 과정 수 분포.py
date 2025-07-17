@@ -112,7 +112,7 @@ st.plotly_chart(fig)
 NCS_1_region = df.groupby(['주소', 'NCS_1']).size().reset_index(name='count')
 
 # 주소별 구 리스트
-gu_list = sorted(NCS_1_region['주소'].unique())
+gu_list1 = sorted(NCS_1_region['주소'].unique())
 
 # NCS 코드 → 이름 매핑 (예시)
 # 반드시 실제 코드에 맞게 ncs1_map 정의 필요
@@ -121,7 +121,7 @@ NCS_1_region['NCS_1_명'] = NCS_1_region['NCS_1'].map(ncs1_map)
 # Streamlit UI
 st.title("서울시 지역별 직종 분포")
 
-selected_gu = st.selectbox("구를 선택하세요", gu_list)
+selected_gu = st.selectbox("구를 선택하세요", gu_list1)
 
 # 선택된 구 필터링
 data = NCS_1_region[NCS_1_region['주소'] == selected_gu]
