@@ -84,33 +84,27 @@ fig.update_layout(
     height=600
 )
 
+# Plotly Figure 생성
 fig = go.Figure()
 
-# 막대: 평균 신청률
+# 막대: 평균 신청률 + 텍스트: 강좌 수
 fig.add_trace(go.Bar(
     x=labels,
     y=mean_ratio,
     name='평균 신청률',
-    yaxis='y1',
-    marker_color='rgb(79,129,189)'
-))
-
-# 선: 강좌 수
-fig.add_trace(go.Scatter(
-    x=labels,
-    y=course_count,
-    name='강좌 수',
-    yaxis='y2',
-    mode='lines+markers',
-    line=dict(color='orange', width=3)
+    marker_color='rgb(79,129,189)',
+    text=course_count,                # 텍스트로 강좌 수 표시
+    textposition='outside',          # 막대 위에 표시
+    hovertemplate=
+        '<b>%{x}</b><br>' +
+        '평균 신청률: %{y:.2f}<br>' +
+        '강좌 수: %{text}<extra></extra>'
 ))
 
 fig.update_layout(
-    title='직종별 평균 신청률 및 강좌 수',
+    title='직종별 평균 신청률 및 강좌 수(텍스트 표시)',
     xaxis=dict(title='직종분류명', tickangle=-90),
-    yaxis=dict(title='평균 신청률', side='left'),
-    yaxis2=dict(title='강좌 수', overlaying='y', side='right'),
-    legend=dict(x=0.01, y=0.99),
+    yaxis=dict(title='평균 신청률'),
     height=600
 )
 
