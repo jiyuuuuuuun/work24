@@ -67,8 +67,40 @@ fig_supply = go.Figure(
         marker=dict(colors=['#ff6666', '#6699ff'])
     )]
 )
-fig_supply.update_layout(title_text=f"{selected_gu_supply} 구 공급 상태 비율")
-st.plotly_chart(fig_supply)
+fig_supply.update_layout(title_text=f"{selected_gu_supply} 교육과정 공급 상태 비율")
+# ✅ 선택한 구에서 수강신청인원이 많은 직종 분석
+popular_courses = (
+    df[df['주소'] == selected_gu_supply]
+    .groupby('NCS_1')['수강신청인원']
+    .sum()
+    .reset_index()
+    .sort_values(by='수강신청인원', ascending=False)
+)
+
+# 상위 7개 + 기타
+top7 = popular_courses.head(7)
+others = popular_courses.iloc[7:]
+etc_row = pd.DataFrame([{
+    'NCS_1': '기타',
+    '수강신청인원': others['수강신청인원'].sum()
+}])
+
+combined = pd.concat([top7, etc_row], ignore_index=True)
+
+# 파이차트
+fig_popular = go.Figure(
+    data=[go.Pie(
+        labels=combined['NCS_1'],
+        values=combined['수강신청인원'],
+        hole=0,
+        marker=dict(colors=px.colors.qualitative.Pastel)  # 색상은 변경 가능
+    )]
+)
+
+fig_popular.update_layout(title_text=f"{selected_gu_supply} 구 인기 직종 분포 (수강신청인원 기준)")
+st.plotly_chart(fig_popular)
+
+# st.plotly_chart(fig_supply)
 
 
 ######################################
