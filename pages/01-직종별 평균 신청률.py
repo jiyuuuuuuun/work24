@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv(r"C:\Users\kimjiyun\Downloads\훈련과정_전체데이터_ver3.csv")
+df = pd.read_csv(r"./훈련과정_전체데이터_ver3.csv")
 
 # 8자리로 만들고
 df['NCS_코드'] = df['NCS_코드'].astype(str).str.zfill(8)
