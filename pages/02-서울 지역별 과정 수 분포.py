@@ -81,24 +81,15 @@ status_count = (
 
 st.title("서울시 지역별 훈련과정 분석")
 
-gu_list_supply = sorted(status_count['주소'].unique())
-selected_gu_supply = st.selectbox("1. 구 선택 (공급상태 파이차트)", gu_list_supply, key="supply_chart")
+# 구 목록을 전체 데이터에서 가져옴
+gu_list = sorted(df['주소'].unique())
 
-filtered_supply_df = status_count[status_count['주소'] == selected_gu_supply]
-supply_status_summary = filtered_supply_df.groupby('공급상태')['count'].sum()
+# 하나의 selectbox로 통합
+selected_gu = st.selectbox("구 선택", gu_list)
 
-fig_supply = go.Figure(
-    data=[go.Pie(
-        labels=supply_status_summary.index,
-        values=supply_status_summary.values,
-        hole=0,
-        marker=dict(colors=['#ff6666', '#6699ff'])
-    )]
-)
-fig_supply.update_layout(title_text=f"{selected_gu_supply} 교육과정 공급 상태 비율")
-# ✅ 선택한 구에서 수강신청인원이 많은 직종 분석
+### 1. 선택한 구의 인기 직종 (수강신청인원 기준) ###
 popular_courses = (
-    df[df['주소'] == selected_gu_supply]
+    df[df['주소'] == selected_gu]
     .groupby('NCS_1_분류명')['수강신청인원']
     .sum()
     .reset_index()
@@ -115,33 +106,22 @@ etc_row = pd.DataFrame([{
 
 combined = pd.concat([top7, etc_row], ignore_index=True)
 
-# 파이차트
+# 파이차트 1: 인기 직종 분포
 fig_popular = go.Figure(
     data=[go.Pie(
         labels=combined['NCS_1_분류명'],
         values=combined['수강신청인원'],
         hole=0,
-        marker=dict(colors=px.colors.qualitative.Pastel)  # 색상은 변경 가능
+        marker=dict(colors=px.colors.qualitative.Pastel)
     )]
 )
+fig_popular.update_layout(title_text=f"📊 {selected_gu} 인기 직종 분포 (수강신청인원 기준)")
 
-fig_popular.update_layout(title_text=f"{selected_gu_supply} 인기 직종 분포")
-st.plotly_chart(fig_popular)
-st.write('수강신청인원기준')
-
-# st.plotly_chart(fig_supply)
-
-
-######################################
-# 2. 지역별 직종 분포 파이차트
-
+### 2. 선택한 구의 전체 직종 분포 (훈련과정 수 기준) ###
 NCS_1_region = df.groupby(['주소', 'NCS_1']).size().reset_index(name='count')
 NCS_1_region['NCS_1_명'] = NCS_1_region['NCS_1'].map(ncs1_map)
 
-gu_list_ncs = sorted(NCS_1_region['주소'].unique())
-selected_gu_ncs = st.selectbox("2. 구 선택", gu_list_ncs, key="ncs_chart")
-
-data_ncs = NCS_1_region[NCS_1_region['주소'] == selected_gu_ncs]
+data_ncs = NCS_1_region[NCS_1_region['주소'] == selected_gu]
 data_ncs_sorted = data_ncs.sort_values(by='count', ascending=False)
 
 top7_ncs = data_ncs_sorted.head(7)
@@ -150,6 +130,7 @@ etc_count = data_ncs_sorted['count'].iloc[7:].sum()
 labels_ncs = list(top7_ncs['NCS_1_명']) + ['기타(etc)']
 values_ncs = list(top7_ncs['count']) + [etc_count]
 
+# 파이차트 2: 전체 직종 분포
 fig_ncs = go.Figure(
     data=[go.Pie(
         labels=labels_ncs,
@@ -160,5 +141,13 @@ fig_ncs = go.Figure(
         sort=False
     )]
 )
-fig_ncs.update_layout(title=f"{selected_gu_ncs} 지역 직종 분포", height=500)
+fig_ncs.update_layout(title=f"🧭 {selected_gu} 직종 분포 (훈련과정 수 기준)", height=500)
+
+# 출력
+st.plotly_chart(fig_popular)
+st.write('※ 기준: 수강신청인원')
+
 st.plotly_chart(fig_ncs)
+st.write('※ 기준: 개설 훈련과정 수')
+
+
