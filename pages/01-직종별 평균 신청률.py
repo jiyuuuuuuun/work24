@@ -102,7 +102,7 @@ fig.add_trace(go.Bar(
 ))
 
 fig.update_layout(
-    title='직종별 평균 신청률 및 강좌 수(텍스트 표시)',
+    title='직종별 평균 신청률 및 강좌 수',
     xaxis=dict(title='직종분류명', tickangle=-90),
     yaxis=dict(title='평균 신청률'),
     height=600
