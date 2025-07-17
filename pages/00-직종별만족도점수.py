@@ -62,7 +62,7 @@ fig = px.bar(
         '제목': False
     },
     labels={'만족도점수': '만족도 점수'},
-    title=f"'{selected_name}' 분야 상위 10개 과정 만족도 시각화"
+    title=f"'{selected_name}' 분야 상위 10개 과정 만족도"
 )
 
 fig.update_traces(textposition='outside')
