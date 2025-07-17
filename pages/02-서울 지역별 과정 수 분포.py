@@ -96,15 +96,15 @@ popular_courses = (
     .sort_values(by='수강신청인원', ascending=False)
 )
 
-# 상위 7개 + 기타
-top7 = popular_courses.head(7)
-others = popular_courses.iloc[7:]
+# 상위 5개 + 기타
+top5 = popular_courses.head(5)
+others = popular_courses.iloc[5:]
 etc_row = pd.DataFrame([{
     'NCS_1_분류명': '기타',
     '수강신청인원': others['수강신청인원'].sum()
 }])
 
-combined = pd.concat([top7, etc_row], ignore_index=True)
+combined = pd.concat([top5, etc_row], ignore_index=True)
 
 # 파이차트 1: 인기 직종 분포
 fig_popular = go.Figure(
@@ -124,11 +124,11 @@ NCS_1_region['NCS_1_명'] = NCS_1_region['NCS_1'].map(ncs1_map)
 data_ncs = NCS_1_region[NCS_1_region['주소'] == selected_gu]
 data_ncs_sorted = data_ncs.sort_values(by='count', ascending=False)
 
-top7_ncs = data_ncs_sorted.head(7)
-etc_count = data_ncs_sorted['count'].iloc[7:].sum()
+top7_ncs = data_ncs_sorted.head(5)
+etc_count = data_ncs_sorted['count'].iloc[5:].sum()
 
-labels_ncs = list(top7_ncs['NCS_1_명']) + ['기타(etc)']
-values_ncs = list(top7_ncs['count']) + [etc_count]
+labels_ncs = list(top5_ncs['NCS_1_명']) + ['기타(etc)']
+values_ncs = list(top5_ncs['count']) + [etc_count]
 
 # 파이차트 2: 전체 직종 분포
 fig_ncs = go.Figure(
