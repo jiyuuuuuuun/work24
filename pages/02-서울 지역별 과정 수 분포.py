@@ -121,10 +121,10 @@ NCS_1_region['NCS_1_명'] = NCS_1_region['NCS_1'].map(ncs1_map)
 # Streamlit UI
 st.title("서울시 지역별 직종 분포")
 
-selected_gu = st.selectbox("구를 선택하세요", gu_list1)
+selected_gu1 = st.selectbox("구를 선택하세요", gu_list1)
 
 # 선택된 구 필터링
-data = NCS_1_region[NCS_1_region['주소'] == selected_gu]
+data = NCS_1_region[NCS_1_region['주소'] == selected_gu1]
 
 # 직종별 count 정렬
 data_sorted = data.sort_values(by='count', ascending=False)
@@ -152,7 +152,7 @@ fig1 = go.Figure(
 )
 
 fig1.update_layout(
-    title=f"{selected_gu} 지역 직종 분포",
+    title=f"{selected_gu1} 지역 직종 분포",
     height=500
 )
 
