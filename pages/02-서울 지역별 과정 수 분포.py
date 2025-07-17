@@ -125,8 +125,9 @@ fig_popular = go.Figure(
     )]
 )
 
-fig_popular.update_layout(title_text=f"{selected_gu_supply} 구 인기 직종 분포 (수강신청인원 기준)")
+fig_popular.update_layout(title_text=f"{selected_gu_supply} 인기 직종 분포")
 st.plotly_chart(fig_popular)
+st.write('수강신청인원기준')
 
 # st.plotly_chart(fig_supply)
 
@@ -138,7 +139,7 @@ NCS_1_region = df.groupby(['주소', 'NCS_1']).size().reset_index(name='count')
 NCS_1_region['NCS_1_명'] = NCS_1_region['NCS_1'].map(ncs1_map)
 
 gu_list_ncs = sorted(NCS_1_region['주소'].unique())
-selected_gu_ncs = st.selectbox("2. 구 선택 (직종 분포 파이차트)", gu_list_ncs, key="ncs_chart")
+selected_gu_ncs = st.selectbox("2. 구 선택", gu_list_ncs, key="ncs_chart")
 
 data_ncs = NCS_1_region[NCS_1_region['주소'] == selected_gu_ncs]
 data_ncs_sorted = data_ncs.sort_values(by='count', ascending=False)
