@@ -115,7 +115,7 @@ fig_popular = go.Figure(
         marker=dict(colors=px.colors.qualitative.Pastel)
     )]
 )
-fig_popular.update_layout(title_text=f"📊 {selected_gu} 인기 직종 분포 (수강신청인원 기준)")
+fig_popular.update_layout(title_text=f"📊 {selected_gu} 인기 직종 분포")
 
 ### 2. 선택한 구의 전체 직종 분포 (훈련과정 수 기준) ###
 NCS_1_region = df.groupby(['주소', 'NCS_1']).size().reset_index(name='count')
@@ -141,13 +141,22 @@ fig_ncs = go.Figure(
         sort=False
     )]
 )
-fig_ncs.update_layout(title=f"🧭 {selected_gu} 직종 분포 (훈련과정 수 기준)", height=500)
+fig_ncs.update_layout(title=f"🧭 {selected_gu} 직종 분포", height=500)
 
-# 출력
-st.plotly_chart(fig_popular)
-st.write('※ 기준: 수강신청인원')
+# 2개 컬럼 만들기
+col1, col2 = st.columns(2)
 
-st.plotly_chart(fig_ncs)
-st.write('※ 기준: 개설 훈련과정 수')
+# 왼쪽: 수강신청인원 기준 인기 직종
+with col1:
+    st.subheader(f"📊 {selected_gu} 인기 직종")
+    st.plotly_chart(fig_popular, use_container_width=True)
+    st.caption('※ 기준: 수강신청인원')
+
+# 오른쪽: 개설과정 수 기준 직종 분포
+with col2:
+    st.subheader(f"🧭 {selected_gu} 직종 분포")
+    st.plotly_chart(fig_ncs, use_container_width=True)
+    st.caption('※ 기준: 개설 훈련과정 수')
+
 
 
