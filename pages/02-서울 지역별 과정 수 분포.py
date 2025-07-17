@@ -140,7 +140,7 @@ labels = list(top7['NCS_1_명']) + ['기타(etc)']
 values = list(top7['count']) + [etc_count]
 
 # 파이차트 생성
-fig = go.Figure(
+fig1 = go.Figure(
     data=[go.Pie(
         labels=labels,
         values=values,
@@ -151,10 +151,10 @@ fig = go.Figure(
     )]
 )
 
-fig.update_layout(
+fig1.update_layout(
     title=f"{selected_gu} 지역 직종 분포",
     height=500
 )
 
 # 출력
-st.plotly_chart(fig)
+st.plotly_chart(fig1)
