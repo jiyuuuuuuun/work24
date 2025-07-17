@@ -15,7 +15,7 @@ import pandas as pd
 import streamlit as st
 
 # 데이터 불러오기
-df4 = pd.read_csv("C:\Users\alsdu\Downloads\훈련과정_전체데이터_ver3.csv")  
+df4 = pd.read_csv(r"C:\Users\alsdu\Downloads\훈련과정_전체데이터_ver3.csv")  
 
 
 
