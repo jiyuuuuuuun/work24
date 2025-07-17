@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
+import plotly.express as px
 
 df = pd.read_csv(r"./훈련과정_전체데이터_ver3.csv")
 
